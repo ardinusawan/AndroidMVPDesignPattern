@@ -7,14 +7,15 @@ import android.widget.EditText
 import android.widget.Toast
 import com.example.androidmvplogin.Presenter.LoginPresenter
 import com.example.androidmvplogin.View.ILoginView
+import es.dmoral.toasty.Toasty
 
 class MainActivity : AppCompatActivity(), ILoginView {
 
     private lateinit var loginPresenter: LoginPresenter
 
-    private lateinit var edt_email: EditText
+    private lateinit var edtEmail: EditText
 
-    private lateinit var edt_password: EditText
+    private lateinit var edtPassword: EditText
 
     private lateinit var btnLogin: Button
 
@@ -24,8 +25,8 @@ class MainActivity : AppCompatActivity(), ILoginView {
 
         // Init
         btnLogin = findViewById(R.id.btn_login)
-        edt_email = findViewById(R.id.edt_email)
-        edt_password = findViewById(R.id.edt_password)
+        edtEmail = findViewById(R.id.edt_email)
+        edtPassword = findViewById(R.id.edt_password)
 
         // Init
         loginPresenter = LoginPresenter(this)
@@ -33,13 +34,17 @@ class MainActivity : AppCompatActivity(), ILoginView {
         // Event
         btnLogin.setOnClickListener {
             loginPresenter.onLogin(
-                edt_email.text.toString(),
-                edt_password.text.toString()
+                edtEmail.text.toString(),
+                edtPassword.text.toString()
             )
         }
     }
 
-    override fun onLoginResult(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    override fun onLoginSuccess(message: String) {
+        Toasty.success(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onLoginError(message: String) {
+        Toasty.error(this, message, Toast.LENGTH_SHORT).show()
     }
 }
